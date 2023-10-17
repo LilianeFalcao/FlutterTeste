@@ -44,7 +44,26 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             Expanded(
               child: ListView.builder(
                 itemCount: controller.tarefas.length,
-                itemBuilder: (context, i)=>TarefasTitle(controller.tarefas[i].titulo),
+                itemBuilder: (context, i)=>
+                InkWell(
+                  onTap: (){
+                    showModalBottomSheet(
+                      context: context,
+                      builder: (context)=>ListTile(
+                        title: const Text("Deletar"),
+                        onTap: () {  
+                          controller
+                            .removeTarefa(controller.tarefas[i]);
+
+                          Navigator.pop(context);
+                            setState(() {
+                              
+                            });
+                      })
+                      );
+                  },
+                  child: TarefasTitle(controller.tarefas[i].titulo)
+                  ),
                 ),
             ),
           ],
