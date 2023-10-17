@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:minicurso_flutter/model/tarefa.dart';
+import 'package:minicurso_flutter/screens/controllers/homeScreenController.dart';
 
 import 'components/tarefa.dart';
 
@@ -10,6 +12,10 @@ class MyHomeScreen extends StatefulWidget {
 }
 
 class _MyHomeScreenState extends State<MyHomeScreen> {
+  HomeScreenController controller = HomeScreenController(
+
+  );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,10 +41,49 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 ),
             ),
         
-            const TarefasTitle("comparar ração"),
-            const TarefasTitle("levar a Lilo pra passear"),
+            Expanded(
+              child: ListView.builder(
+                itemCount: controller.tarefas.length,
+                itemBuilder: (context, i)=>TarefasTitle(controller.tarefas[i].titulo),
+                ),
+            ),
           ],
             ),
-        ));
+        ),
+        
+        floatingActionButton: FloatingActionButton(
+          child: const Icon(Icons.assignment_rounded),
+          onPressed: (){
+            TextEditingController titulo = TextEditingController();
+
+          showModalBottomSheet(
+            context: context,
+            builder: (context) => Container(
+              padding: const EdgeInsets.all(8),
+              child: Column(
+                children: [
+                  TextField(
+                    controller: titulo,
+                  ),
+                  TextButton(
+                    onPressed: () {
+                      Tarefas novaTarefa = Tarefas(titulo.text);
+
+                      controller.adicionarTarefa(novaTarefa);
+
+                      Navigator.pop(context);
+                      setState(() {
+                        
+                      });
+                    }, 
+                    child: const Text("Adicionar Tarefa"),
+                    )
+                ],
+              ),
+            ),
+            );
+        }, ),
+        );
+
   }
 }
